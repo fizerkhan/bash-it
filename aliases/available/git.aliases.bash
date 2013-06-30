@@ -42,4 +42,5 @@ if [ -z "$EDITOR" ]; then
     esac
 else
     alias gd="git diff | $EDITOR"
+    alias gds="git diff --staged | $EDITOR"
 fi

@@ -8,6 +8,7 @@ alias jo='jitsu logout'
 
 # deploy and update
 alias jd='jitsu apps deploy'
+alias jdc='jitsu apps deploy -c true'
 alias ju='jitsu apps update'
 
 # new and start, restart, stop

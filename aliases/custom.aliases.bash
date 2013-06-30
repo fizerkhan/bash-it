@@ -28,8 +28,14 @@ alias grt='grunt test'
 ### Node
 alias ns='node server/'
 alias nds='nodemon server/'
+alias ndst='NODE_ENV=testing nodemon server/'
 alias ndsp='NODE_ENV=production nodemon server/'
 alias ni='npm install'
+
+### Google App engine
+# Change eclipse directory to your location
+alias gaed='/Users/mymac/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.7.3/appengine-java-sdk-1.7.3/bin/appcfg.sh update war'
+alias gaer='/Users/mymac/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.7.3/appengine-java-sdk-1.7.3/bin/appcfg.sh rollback war'
 
 ### FaceTime
 alias ttj='open facetime://jothiram.s@gmail.com'
