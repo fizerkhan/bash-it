@@ -4,6 +4,7 @@ about-alias 'custom abbreviations'
 
 ## Git
 alias gres='git reset'
+alias grmt='git remote -v'
 
 ## Burl
 alias GET='burl GET'
@@ -19,23 +20,43 @@ alias mydb='mongod --dbpath ~/development/supports/mongodb/data/'
 
 # Yeoman, Grunt and Bower
 alias grs='grunt server'
+alias grsf='grunt server --force'
 alias grsd='grunt server:dist'
 alias grc='grunt compass watch'
 alias grb='grunt build'
 alias grbf='grunt build --force'
 alias grt='grunt test'
+alias grh='grunt jshint'
 
 ### Node
 alias ns='node server/'
+alias nsd='node --debug server/'
+alias nsdb='node --debug-brk server/'
 alias nds='nodemon server/'
+alias ndsd='nodemon --debug server/'
+alias ndsdb='nodemon --debug-brk server/'
+alias ndts='nodemon .tmp/server/'
+alias ndtsd='nodemon --debug .tmp/server/'
+alias ndtsdb='nodemon --debug-brk .tmp/server/'
 alias ndst='NODE_ENV=testing nodemon server/'
 alias ndsp='NODE_ENV=production nodemon server/'
+
+### Node Inspector
+alias nis='node-inspector'
+
+### NPM
 alias ni='npm install'
+alias nip='npm install --production'
+
+### Heroku
+alias hpu='git push heroku master'
+
+### Foreman start for Heroku
+alias fsp='NODE_ENV=production foreman start'
 
 ### Google App engine
-# Change eclipse directory to your location
-alias gaed='/Users/mymac/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.7.3/appengine-java-sdk-1.7.3/bin/appcfg.sh update war'
-alias gaer='/Users/mymac/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.7.3/appengine-java-sdk-1.7.3/bin/appcfg.sh rollback war'
+alias gaed='/Users/fizerkhan/development/tools/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.7.3/appengine-java-sdk-1.7.3/bin/appcfg.sh update war'
+alias gaer='/Users/fizerkhan/development/tools/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.7.3/appengine-java-sdk-1.7.3/bin/appcfg.sh rollback war'
 
 ### FaceTime
 alias ttj='open facetime://jothiram.s@gmail.com'
