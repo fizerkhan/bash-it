@@ -37,8 +37,8 @@ bash-it ()
     param '3: specific component [optional]'
     example '$ bash-it show plugins'
     example '$ bash-it help aliases'
-    example '$ bash-it enable plugin git'
-    example '$ bash-it disable alias hg'
+    example '$ bash-it enable plugin git [tmux]...'
+    example '$ bash-it disable alias hg [tmux]...'
     typeset verb=${1:-}
     shift
     typeset component=${1:-}
@@ -72,7 +72,15 @@ bash-it ()
             fi
         fi
     fi
-    $func $*
+
+    if [ x"$verb" == x"enable" -o x"$verb" == x"disable" ];then
+        for arg in "$@"
+        do
+            $func $arg
+        done
+    else
+        $func $*
+    fi
 }
 
 _is_function ()
@@ -80,7 +88,7 @@ _is_function ()
     _about 'sets $? to true if parameter is the name of a function'
     _param '1: name of alleged function'
     _group 'lib'
-    [ -n "$(type -a $1 2>/dev/null | grep 'is a function')" ]
+    [ -n "$(LANG=C type -t $1 2>/dev/null | grep 'function')" ]
 }
 
 _bash-it-aliases ()
@@ -134,9 +142,9 @@ _bash-it-describe ()
         printf "%-20s%-10s%s\n" "$(basename $f | cut -d'.' -f1)" "  [$enabled]" "$(cat $f | metafor about-$file_type)"
     done
     printf '\n%s\n' "to enable $preposition $file_type, do:"
-    printf '%s\n' "$ bash-it enable $file_type  <$file_type name> -or- $ bash-it enable $file_type all"
+    printf '%s\n' "$ bash-it enable $file_type  <$file_type name> [$file_type name]... -or- $ bash-it enable $file_type all"
     printf '\n%s\n' "to disable $preposition $file_type, do:"
-    printf '%s\n' "$ bash-it disable $file_type <$file_type name> -or- $ bash-it disable $file_type all"
+    printf '%s\n' "$ bash-it disable $file_type <$file_type name> [$file_type name]... -or- $ bash-it disable $file_type all"
 }
 
 _disable-plugin ()
@@ -198,7 +206,7 @@ _disable-thing ()
     else
         typeset plugin=$(command ls $BASH_IT/$subdirectory/enabled/$file_entity.*bash 2>/dev/null | head -1)
         if [ -z "$plugin" ]; then
-            printf '%s\n' "sorry, that does not appear to be an enabled $file_type."
+            printf '%s\n' "sorry, $file_entity does not appear to be an enabled $file_type."
             return
         fi
         rm $BASH_IT/$subdirectory/enabled/$(basename $plugin)
@@ -261,13 +269,13 @@ _enable-thing ()
         do
             plugin=$(basename $f)
             if [ ! -h $BASH_IT/$subdirectory/enabled/$plugin ]; then
-                ln -s $BASH_IT/$subdirectory/available/$plugin $BASH_IT/$subdirectory/enabled/$plugin
+                ln -s ../available/$plugin $BASH_IT/$subdirectory/enabled/$plugin
             fi
         done
     else
         typeset plugin=$(command ls $BASH_IT/$subdirectory/available/$file_entity.*bash 2>/dev/null | head -1)
         if [ -z "$plugin" ]; then
-            printf '%s\n' "sorry, that does not appear to be an available $file_type."
+            printf '%s\n' "sorry, $file_entity does not appear to be an available $file_type."
             return
         fi
 
@@ -279,10 +287,18 @@ _enable-thing ()
 
         mkdir -p $BASH_IT/$subdirectory/enabled
 
-        ln -s $BASH_IT/$subdirectory/available/$plugin $BASH_IT/$subdirectory/enabled/$plugin
+        ln -s ../available/$plugin $BASH_IT/$subdirectory/enabled/$plugin
     fi
 
     printf '%s\n' "$file_entity enabled."
+}
+
+_help-completions()
+{
+  _about 'summarize all completions available in bash-it'
+  _group 'lib'
+
+  _bash-it-completions
 }
 
 _help-aliases()
@@ -353,3 +369,21 @@ all_groups ()
     cat $file | sort | uniq
     rm $file
 }
+
+if ! type pathmunge > /dev/null 2>&1
+then
+  function pathmunge () {
+    about 'prevent duplicate directories in you PATH variable'
+    group 'lib helpers'
+    example 'pathmunge /path/to/dir is equivalent to PATH=/path/to/dir:$PATH'
+    example 'pathmunge /path/to/dir after is equivalent to PATH=$PATH:/path/to/dir'
+
+    if ! [[ $PATH =~ (^|:)$1($|:) ]] ; then
+      if [ "$2" = "after" ] ; then
+        export PATH=$PATH:$1
+      else
+        export PATH=$1:$PATH
+      fi
+    fi
+  }
+fi
