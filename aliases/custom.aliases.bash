@@ -2,9 +2,15 @@
 cite 'about-alias'
 about-alias 'custom abbreviations'
 
+## Safer delete and copy
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
 ## Git
 alias gres='git reset'
 alias grmt='git remote -v'
+alias gds='git diff --staged | subl'
 
 ## Burl
 alias GET='burl GET'
@@ -16,7 +22,7 @@ alias DELETE='burl DELETE'
 alias OPTIONS='burl OPTIONS'
 
 # Servers
-alias mydb='mongod --dbpath ~/development/supports/mongodb/data/'
+alias mydb='mongod --dbpath ~/development/tools/mongodb/data/ --directoryperdb'
 
 # Yeoman, Grunt and Bower
 alias grs='grunt server'
@@ -94,4 +100,3 @@ alias cleanup="find . -name '*.DS_Store' -type f -ls -delete"
 # Hide/show all desktop icons (useful when presenting)
 alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
 alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
-
